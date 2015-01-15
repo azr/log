@@ -206,3 +206,12 @@ var LevelNames = map[Level]string{
 	INFO:     "INFO",
 	DEBUG:    "DEBUG",
 }
+
+var NamesLevel = map[string]Level{
+	"CRITICAL": CRITICAL,
+	"ERROR":    ERROR,
+	"WARNING":  WARNING,
+	"NOTICE":   NOTICE,
+	"INFO":     INFO,
+	"DEBUG":    DEBUG,
+}
