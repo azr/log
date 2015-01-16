@@ -15,6 +15,8 @@ type Logger interface {
 	// SetLevel changes the level of the logger. Default is logging.Info.
 	SetLevel(Level)
 
+	GetLevel() Level
+
 	// SetHandler replaces the current handler for output. Default is logging.StderrHandler.
 	SetHandler(Handler)
 
@@ -77,6 +79,7 @@ func NewLogger(name string) Logger {
 	}
 }
 
+func (l *logger) GetLevel() Level      { return l.Level }
 func (l *logger) SetLevel(level Level) { l.Level = level }
 func (l *logger) SetHandler(b Handler) { l.Handler = b }
 func (l *logger) SetCallDepth(n int)   { l.calldepth = n }
