@@ -1,7 +1,10 @@
 // Package logging is an alternative to log package in standard library.
 package log
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 type Level int
 
@@ -34,6 +37,11 @@ var stderrHandler = NewWriterHandler(os.Stderr)
 func SetLevel(l Level) {
 	DefaultLogger.SetLevel(l)
 	DefaultHandler.SetLevel(l)
+}
+
+// SetLevel changes the level of DefaultLogger and DefaultHandler.
+func SetLevelString(s string) {
+	SetLevel(NamesLevel[strings.ToUpper(s)])
 }
 
 func Fatal(args ...interface{})                    { DefaultLogger.Fatal(args...) }
