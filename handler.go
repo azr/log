@@ -88,13 +88,6 @@ func (h *BaseHandler) SetFormatter(f Formatter) {
 	h.Formatter = f
 }
 
-func (h *BaseHandler) FilterAndFormat(rec *Record) string {
-	if rec.Level > h.Level {
-		return ""
-	}
-	return h.Formatter.Format(rec)
-}
-
 ///////////////////
 //               //
 // WriterHandler //
@@ -117,7 +110,7 @@ func NewWriterHandler(w io.Writer) *WriterHandler {
 }
 
 func (b *WriterHandler) Handle(rec *Record) {
-	message := b.BaseHandler.FilterAndFormat(rec)
+	message := b.Formatter.Format(rec)
 	if message == "" {
 		return
 	}
@@ -207,11 +200,21 @@ var LevelNames = map[Level]string{
 	DEBUG:    "DEBUG",
 }
 
-var NamesLevel = map[string]Level{
-	"CRITICAL": CRITICAL,
-	"ERROR":    ERROR,
-	"WARNING":  WARNING,
-	"NOTICE":   NOTICE,
-	"INFO":     INFO,
-	"DEBUG":    DEBUG,
+func LevelFromString(level string) Level {
+	switch strings.ToUpper(level) {
+	case "CRITICAL":
+		return CRITICAL
+	case "ERROR":
+		return ERROR
+	case "WARNING":
+		return WARNING
+	case "NOTICE":
+		return NOTICE
+	case "INFO":
+		return INFO
+	case "DEBUG":
+		return DEBUG
+	default:
+		return DefaultLevel
+	}
 }

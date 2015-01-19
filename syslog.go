@@ -30,7 +30,7 @@ func NewSyslogHandler(tag string) (*SyslogHandler, error) {
 }
 
 func (b *SyslogHandler) Handle(rec *Record) {
-	message := b.BaseHandler.FilterAndFormat(rec)
+	message := b.Formatter.Format(rec)
 	if message == "" {
 		return
 	}

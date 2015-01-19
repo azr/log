@@ -3,7 +3,6 @@ package log
 
 import (
 	"os"
-	"strings"
 )
 
 type Level int
@@ -40,8 +39,8 @@ func SetLevel(l Level) {
 }
 
 // SetLevel changes the level of DefaultLogger and DefaultHandler.
-func SetLevelString(s string) {
-	SetLevel(NamesLevel[strings.ToUpper(s)])
+func SetLevelFromString(s string) {
+	SetLevel(LevelFromString(s))
 }
 
 func Fatal(args ...interface{})                    { DefaultLogger.Fatal(args...) }

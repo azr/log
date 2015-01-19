@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 	"time"
 )
 
@@ -15,7 +14,7 @@ import (
 type Logger interface {
 	// SetLevel changes the level of the logger. Default is logging.Info.
 	SetLevel(Level)
-	SetLevelString(string)
+	SetLevelFromString(string)
 
 	GetLevel() Level
 
@@ -81,11 +80,21 @@ func NewLogger(name string) Logger {
 	}
 }
 
-func (l *logger) GetLevel() Level         { return l.Level }
-func (l *logger) SetLevel(level Level)    { l.Level = level }
-func (l *logger) SetHandler(b Handler)    { l.Handler = b }
-func (l *logger) SetCallDepth(n int)      { l.calldepth = n }
-func (l *logger) SetLevelString(s string) { l.SetLevel(NamesLevel[strings.ToUpper(s)]) }
+// NewLoggerOn returns a new Logger implementation required level.
+// Do not forget to close it at exit.
+func NewLoggerOn(name, level string) Logger {
+	return &logger{
+		Name:    name,
+		Level:   LevelFromString(level),
+		Handler: DefaultHandler,
+	}
+}
+
+func (l *logger) GetLevel() Level             { return l.Level }
+func (l *logger) SetLevel(level Level)        { l.Level = level }
+func (l *logger) SetHandler(b Handler)        { l.Handler = b }
+func (l *logger) SetCallDepth(n int)          { l.calldepth = n }
+func (l *logger) SetLevelFromString(s string) { l.SetLevel(LevelFromString(s)) }
 
 func (l *logger) log(level Level, message string) {
 	if level > l.Level {
